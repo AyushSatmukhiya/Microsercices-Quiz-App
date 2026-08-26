@@ -9,5 +9,5 @@ public class MicrosercicesDemoQuizApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MicrosercicesDemoQuizApplication.class, args);
 	}
-
+ 
 }

@@ -17,5 +17,9 @@ public class questionService {
 
 	public List<QuestionDB> getAllQuestions() {
 		return repo.findAll();
+	}
+
+	public List<QuestionDB> searchByCatgeory(String type) {
+		return repo.findByCategory(type);
 	}	
 }

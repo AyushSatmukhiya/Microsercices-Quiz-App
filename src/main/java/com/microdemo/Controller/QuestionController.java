@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,5 +28,11 @@ public class QuestionController {
 	@GetMapping("category/{Type}")
 	public List<QuestionDB> getQuestionByCategory(@PathVariable String Type){
 		return service.searchByCatgeory(Type);
+	}
+	
+	@PostMapping("addQuestion")
+	public String addQuestion(@RequestBody QuestionDB question)
+	{
+		return service.addQuestion(question);
 	}
 }

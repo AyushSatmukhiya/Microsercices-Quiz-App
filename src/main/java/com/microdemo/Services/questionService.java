@@ -21,5 +21,14 @@ public class questionService {
 
 	public List<QuestionDB> searchByCatgeory(String type) {
 		return repo.findByCategory(type);
+	}
+
+	public String addQuestion(QuestionDB question) {
+		repo.save(question);
+		return "Success";
 	}	
+	
+	
+	
+	
 }

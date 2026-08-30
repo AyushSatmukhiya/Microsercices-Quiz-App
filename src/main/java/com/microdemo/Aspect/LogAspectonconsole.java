@@ -40,7 +40,7 @@ public class LogAspectonconsole {
 
     @AfterReturning("updateQuestionPointcut()")
     public void logAfterupdate() {
-        LOOGER.info("Question not updated successfully into the database: SUCCESS");
+        LOOGER.info("Question  updated successfully into the database: SUCCESS");
     }
     
     

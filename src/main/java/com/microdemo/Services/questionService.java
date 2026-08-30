@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.microdemo.Modal.QuestionDB;
@@ -16,25 +18,47 @@ public class questionService {
 	@Autowired
 	questionRepository repo;
 
-	public List<QuestionDB> getAllQuestions() {
-		return repo.findAll();
+	public ResponseEntity<List<QuestionDB>> getAllQuestions() {
+		try {
+			return new ResponseEntity<>(repo.findAll(),HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<>(new ArrayList<>(),HttpStatus.BAD_REQUEST);
 	}
 
-	public List<QuestionDB> searchByCatgeory(String type) {
-		return repo.findByCategory(type);
+	public ResponseEntity<List<QuestionDB>> searchByCatgeory(String type) {
+		try {
+			return  new ResponseEntity<>(repo.findByCategory(type),HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<List<QuestionDB>>(new ArrayList<>(),HttpStatus.BAD_REQUEST);
 	}
 
-	public String addQuestion(QuestionDB question) {
+	public ResponseEntity<String> addQuestion(QuestionDB question) {
 		repo.save(question);
-		return "Success";
+		try {
+			return new ResponseEntity<>("Success",HttpStatus.CREATED);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<>("Failure",HttpStatus.NOT_ACCEPTABLE);
+		
 	}
 
-	public String deleteQuestion(int id) {
+	public ResponseEntity<String> deleteQuestion(int id) {
 		repo.deleteById(id);
-		return "successfully deleted";
+		try {
+			return new ResponseEntity<>("Successfully Deleted",HttpStatus.FOUND);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<>("Failure",HttpStatus.NOT_ACCEPTABLE);
+	
 	}
 
-	public String updateDetails(int id,QuestionDB question) {
+	public ResponseEntity<String> updateDetails(int id,QuestionDB question) {
 		Optional<QuestionDB> tag=repo.findById(id);
 		if(tag.isPresent()) {
 			QuestionDB existing=tag.get();
@@ -47,10 +71,15 @@ public class questionService {
 			existing.setQuestionTitle(question.getQuestionTitle());
 			existing.setRightAnswer(question.getRightAnswer());
 			repo.save(existing);
-			return "Updated Successfully";
+			try {
+				return new  ResponseEntity<>("Updated Successfully",HttpStatus.ACCEPTED);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			  return new ResponseEntity<>("Error: ",HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		else {
-			return "Question not found with ID:" + id;
+			return new ResponseEntity<>("Question not found with ID:",HttpStatus.BAD_REQUEST);
 		}
 	}
 

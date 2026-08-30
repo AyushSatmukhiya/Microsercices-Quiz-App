@@ -11,5 +11,5 @@ import com.microdemo.Modal.QuestionDB;
 public interface questionRepository  extends JpaRepository<QuestionDB, Integer>{
 
 	List<QuestionDB> findByCategory(String type);
-
+   
 }

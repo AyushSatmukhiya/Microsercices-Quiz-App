@@ -3,6 +3,7 @@ package com.microdemo.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,4 +36,15 @@ public class QuestionController {
 	{
 		return service.addQuestion(question);
 	}
+	
+	@DeleteMapping("delete/{id}")
+	public String deleteQuestion(@PathVariable int id) {
+		return service.deleteQuestion(id);
+	}
+	
+	@PostMapping("update/{id}")
+     public String updateQuestion(@PathVariable int id,@RequestBody QuestionDB question) {
+		return service.updateDetails(id,question);
+	}
+	
 }

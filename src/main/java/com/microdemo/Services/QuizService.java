@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.microdemo.Modal.QuestionDB;
 import com.microdemo.Modal.QuestionWrapper;
 import com.microdemo.Modal.Quiz;
+import com.microdemo.Modal.Response;
 import com.microdemo.Repository.QuizDao;
 import com.microdemo.Repository.questionRepository;
 
@@ -30,7 +31,7 @@ public class QuizService {
 		Quiz quiz=new Quiz();
 		quiz.setTitle(title);
 		quiz.setQuestions(questions);
-		quizdao.save(quiz);
+		quizdao.save(quiz);   
 		 return new ResponseEntity<String>("success",HttpStatus.CREATED);
 	}
 
@@ -46,9 +47,17 @@ public class QuizService {
 		
 	}
 
-	
-	
-	
-	 
-	
+	public ResponseEntity<Integer> calculateResult(int id, List<Response> responses) {
+	    Optional<Quiz> quiz=quizdao.findById(id);
+	    List<QuestionDB> questionFromQuiz=quiz.get().getQuestions();
+	    int right=0;
+	    int i=0;
+	    for(Response rs:responses) {
+	    	if(rs.getResponse().equals(questionFromQuiz.get(i).getRightAnswer())) {
+	    		right++;
+	    	}
+	    	i++;
+	    }
+		return new  ResponseEntity<Integer>(right,HttpStatus.OK);
+	}	
 }

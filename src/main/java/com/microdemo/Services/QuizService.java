@@ -2,6 +2,7 @@ package com.microdemo.Services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.microdemo.Modal.QuestionDB;
+import com.microdemo.Modal.QuestionWrapper;
 import com.microdemo.Modal.Quiz;
 import com.microdemo.Repository.QuizDao;
 import com.microdemo.Repository.questionRepository;
@@ -30,6 +32,18 @@ public class QuizService {
 		quiz.setQuestions(questions);
 		quizdao.save(quiz);
 		 return new ResponseEntity<String>("success",HttpStatus.CREATED);
+	}
+
+	public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(int id) {
+		Optional<Quiz> quiz=quizdao.findById(id);
+		List<QuestionDB> questionFromDB=quiz.get().getQuestions();
+		List<QuestionWrapper> questionForUser=new ArrayList<QuestionWrapper>();
+		for(QuestionDB q:questionFromDB) {
+			QuestionWrapper qw=new QuestionWrapper(q.getId(), q.getQuestionTitle(),q.getOption1(),q.getOption2(),q.getOption3(),q.getOption4());
+			questionForUser.add(qw);
+		}
+		return new ResponseEntity<List<QuestionWrapper>>(questionForUser,HttpStatus.FOUND);
+		
 	}
 
 	
